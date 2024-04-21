@@ -9,7 +9,10 @@ import java.net.URL;
 
 import com.Polizas.Polizas.Persistence.Entities.Transaccion;
 import org.json.JSONObject;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CurrencyExchangeService {
 
     private static final String API_URL = "https://open.er-api.com/v6/latest/COP";
