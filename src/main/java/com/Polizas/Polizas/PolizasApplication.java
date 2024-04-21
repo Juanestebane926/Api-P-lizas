@@ -1,9 +1,11 @@
 package com.Polizas.Polizas;
 
+import com.Polizas.Polizas.Persistence.Entities.Transaccion;
 import com.Polizas.Polizas.Services.RedisService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +20,10 @@ public class PolizasApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PolizasApplication.class, args);
 		RedisService redisService = new RedisService();
-		redisService.save(1L,10.64);
-		System.out.println(redisService.getData(1L));
+		Transaccion transaccion = new Transaccion(1L,new BigDecimal(10),"USD");
+		redisService.saveTransaccion(3L,transaccion);
+		Transaccion transaccion1 = redisService.getTransaccion(3L);
+		System.out.println(transaccion1.toString());
 
 	}
 

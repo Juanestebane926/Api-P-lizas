@@ -17,7 +17,7 @@ public class CompraPoliza {
     private Poliza poliza;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+        @JoinColumn(name = "usuario_id")
     private Usuario usuario;
     @OneToOne
     private Transaccion transaccion;

@@ -1,5 +1,8 @@
 package com.Polizas.Polizas.Services;
 
+import com.Polizas.Polizas.Persistence.Entities.Transaccion;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 
@@ -13,11 +16,12 @@ public class RedisService {
     String password = "EeiX8YlyA7LAx6h3RxD7ZCKVPShktB3k";
     int database = 0;
     private final Jedis jedis;
-
+    private ObjectMapper objectMapper;
     public RedisService() {
         jedis = new Jedis(host, port);
         jedis.auth(password);
         jedis.select(database);
+
     }
 
     public void save(Long id, double valor) {
@@ -35,6 +39,26 @@ public class RedisService {
         return jedis.lrange(String.valueOf(id), 0, -1);
     }
 
+    public void saveTransaccion(Long id, Transaccion transaccion) {
+        objectMapper = new ObjectMapper();
+        String transaccionJson;
+        try {
+            transaccionJson = objectMapper.writeValueAsString(transaccion);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        jedis.set(String.valueOf(id), transaccionJson);
+        jedis.expire(String.valueOf(id),20*60);
+    }
 
+    public Transaccion getTransaccion(Long id){
+        String trasaccionJson = jedis.get(String.valueOf(id));
+
+        try {
+            return objectMapper.readValue(trasaccionJson, Transaccion.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

@@ -50,4 +50,12 @@ public class Transaccion {
         this.moneda = moneda;
     }
 
+    @Override
+    public String toString() {
+        return "Transaccion{" +
+                "Id=" + Id +
+                ", monto=" + monto +
+                ", moneda='" + moneda + '\'' +
+                '}';
+    }
 }
